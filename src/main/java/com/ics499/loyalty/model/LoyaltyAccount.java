@@ -57,6 +57,7 @@ public class LoyaltyAccount {
 		this.tierStrat = tierStrat;
     }
     
+    // added this to make my life easier for a demo, may not be required in the future
     public String getJSON() {
         return "{\"account_id\": " + String.valueOf(this.accountID) + ", \"email\": \"" + this.email + "\", " + 
         "\"points_balance\": " + String.valueOf(this.pointsBalance) + ", " + "\"ytd_points\": " 
