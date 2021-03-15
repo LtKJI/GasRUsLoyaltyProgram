@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Table(name = "Transaction")
 public class Transaction {
 
+
 	@Id
 	@Column(name = "TransactionID")
 	@GeneratedValue(strategy = GenerationType.AUTO)

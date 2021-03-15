@@ -1,5 +1,14 @@
 package com.ics499.loyalty.repositories;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-public class RewardRepo {
+import java.util.List;
+
+@Repository
+public interface RewardRepo extends CrudRepository<int> {
 
 }
+
+
