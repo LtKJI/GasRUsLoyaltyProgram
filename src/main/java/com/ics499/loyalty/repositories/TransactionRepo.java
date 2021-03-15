@@ -1,5 +1,11 @@
 package com.ics499.loyalty.repositories;
 
-public class TransactionRepo {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
+import com.ics499.loyalty.model.Transaction;
+
+@Repository
+public interface TransactionRepo extends CrudRepository <Transaction , Integer> {
+	
 }
