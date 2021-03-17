@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity

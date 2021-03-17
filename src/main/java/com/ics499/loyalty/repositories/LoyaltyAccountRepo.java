@@ -1,5 +1,9 @@
 package com.ics499.loyalty.repositories;
 
-public class LoyaltyAccountRepo {
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.ics499.loyalty.model.*;
+
+public interface LoyaltyAccountRepo extends JpaRepository<Product, Integer>{
 
 }
+
