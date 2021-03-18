@@ -1,22 +1,22 @@
 package com.ics499.loyalty.model;
 import javax.persistence.*;
 
-@Entity
-@Table(name="REWARD")
+// @Entity
+// @Table(name="REWARD")
 public class Reward {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="REWARD_ID")
+    // @Id
+    // @GeneratedValue(strategy=GenerationType.AUTO)
+    // @Column(name="REWARD_ID")
 	int rewardID;
 
-    @Column(name="REWARD_NAME", length=50, nullable=false, unique=false)
+    // @Column(name="REWARD_NAME", length=50, nullable=false, unique=false)
     String name;
 	
-    @Column(name="REWARD_POINTS", type="Integer", nullable=false, unique=false)
+    // @Column(name="REWARD_POINTS", type="Integer", nullable=false, unique=false)
 	int pointsCost;
     
-    @Column(name="REWARD_DESCRIPTION", length=255, nullable=false, unique=false)
+    // @Column(name="REWARD_DESCRIPTION", length=255, nullable=false, unique=false)
 	String description;
 	
 	public Reward(int rID, String n, int pC, String d) {
@@ -59,17 +59,12 @@ public class Reward {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	//Methods
-	
-	//void Reward
-	
-	void displayAllRewards(rewardList) {
-		
-	}
-	
-	Rewards, findRewards(Rewards) {
-		
-	}
+
+	// added this to make my life easier for a demo, may not be required in the future
+    public String getJSON() {
+        return "{\"reward_id\": " + String.valueOf(this.rewardID) + ", \"name\": \"" + this.name + "\", " + 
+        "\"point_cost\": " + String.valueOf(this.pointsCost) + ", " + "\"description\": \"" 
+        + this.description +  "\"}";
+    }
 	
 }
