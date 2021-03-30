@@ -4,14 +4,20 @@ package com.ics499.loyalty.controllers;
 import com.ics499.loyalty.model.LoyaltyAccount;
 
 // need to import all of these annotations to make routing easy
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;  
+// import org.springframework.web.bind.annotation.DeleteMapping;  
 import org.springframework.web.bind.annotation.GetMapping;  
 import org.springframework.web.bind.annotation.PathVariable;  
 import org.springframework.web.bind.annotation.PostMapping;  
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;  
+
+// import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ics499.loyalty.repositories.LoyaltyAccountRepo;
 
 // only needed for basic backend testing
 import java.util.HashMap;
@@ -19,6 +25,8 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/loyalty_account") // all routes here will be /loyalty_account/<path var in mapping>
 public class LoyaltyAccountController {
+    @Autowired
+    private LoyaltyAccountRepo loyaltyAccountRepo;
     /*
         for demo purposes only
             * creates a hashmap that maps email addresses to a LoyaltyAccount
@@ -46,6 +54,8 @@ public class LoyaltyAccountController {
         accounts.put("bob@gmail.com", new LoyaltyAccount(1, "bob@gmail.com", 100, 500, 600, "Gold"));
         accounts.put("jenny@gmail.com", new LoyaltyAccount(2, "jenny@gmail.com", 100, 300, 1000, "Platinum"));
         accountIncrement = 3;
+        loyaltyAccountRepo.save(new LoyaltyAccount(1, "bob@gmail.com", 100, 500, 600, "Gold"));
+        loyaltyAccountRepo.save(new LoyaltyAccount(2, "jenny@gmail.com", 100, 300, 1000, "Platinum"));
         return "{\"message\": \"Bob and Jenny created.\"}";
     }
 
@@ -58,13 +68,14 @@ public class LoyaltyAccountController {
 
     */
     @GetMapping(path = "/display")
-	public String displayAllMembers() {
+	public @ResponseBody Iterable<LoyaltyAccount> displayAllMembers() {
         String users = "{\"users\": [";
         for(String i : accounts.keySet()) {
             users = users + accounts.get(i).getJSON() + ",";
         }
         users = users + "]}";
-		return users;
+        
+		return loyaltyAccountRepo.findAll();
     }
     
     /*
@@ -75,9 +86,9 @@ public class LoyaltyAccountController {
         Same as /display, this will stay about the same but will change a tiny bit
         with the addition of the database.
     */
-    @GetMapping(path = "/find/{email}")
-	public String findMember(@PathVariable("email") String email) {
-		return accounts.get(email).getJSON();
+    @GetMapping(path = "/find/{id}")
+	public @ResponseBody Optional<LoyaltyAccount> findMember(@PathVariable("id") Integer id) {
+		return loyaltyAccountRepo.findById(id);
 	}
 
     /*
@@ -102,6 +113,7 @@ public class LoyaltyAccountController {
 	public String addMember(@RequestBody String email) {
         accounts.put(email, new LoyaltyAccount(accountIncrement, email, 0, 0, 0, "Silver"));
         accountIncrement++;
+        loyaltyAccountRepo.save(new LoyaltyAccount(accountIncrement, email, 0, 0, 0, "Silver"));
         return "{\"message\": \"New member " + email + " added.\"}";
 	}
 
@@ -120,9 +132,11 @@ public class LoyaltyAccountController {
     */
     @PutMapping(path = "/redeem")
 	public String RedeemRewards(@RequestBody LoyaltyAccount la) {
+        // if(loyaltyAccountRepo.findById(la.getAccountId()))
         if(accounts.containsKey(la.getEmail())){
             accounts.remove(la.getEmail());
             accounts.put(la.getEmail(),la);
+            loyaltyAccountRepo.save(la);
             return "{\"message\": \"Rewards redeemed\"}";
         }
         else {
