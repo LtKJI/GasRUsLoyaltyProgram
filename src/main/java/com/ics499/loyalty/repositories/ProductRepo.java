@@ -1,7 +1,11 @@
 package com.ics499.loyalty.repositories;
-import org.springframework.data.jpa.repository.JpaRepository;
+// import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+
+import org.springframework.stereotype.Repository;
 import com.ics499.loyalty.model.*;
 
-public interface ProductRepo extends JpaRepository<Product, Long>{
+@Repository
+public interface ProductRepo extends CrudRepository<Product, Long>{
 
 }

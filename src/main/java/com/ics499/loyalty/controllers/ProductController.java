@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ics499.loyalty.model.Product;
 import com.ics499.loyalty.repositories.ProductRepo;
+import java.util.Optional;
 
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 @RestController

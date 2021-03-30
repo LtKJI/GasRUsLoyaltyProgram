@@ -1,14 +1,34 @@
 package com.ics499.loyalty.model;
 
+import javax.persistence.*;
+// import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@Entity
+@Table(name = "LoyaltyAccount")
 public class LoyaltyAccount {
 
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="account_id")
 	int accountID;
+
+	@Column (name = "email")
 	String email;
+
+	@Column (name = "points_ballance")
 	int pointsBalance;
+
+	@Column (name = "ytd_points")
 	int ytdPoints;
+
+	@Column (name = "lifetime_points")
 	int lifetimePoints;
+
+	@Column (name = "tier_strat")
 	String tierStrat;
 	
+	@Autowired
 	public LoyaltyAccount(int aID, String e, int pB, int ytdP, int lP, String tS) {
 		accountID = aID;
 		email = e;

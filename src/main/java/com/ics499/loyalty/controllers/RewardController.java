@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;  
 
 import com.ics499.loyalty.repositories.RewardRepo;
+import java.util.Optional;
 
 //only needed for basic backend testing
 import java.util.HashMap;

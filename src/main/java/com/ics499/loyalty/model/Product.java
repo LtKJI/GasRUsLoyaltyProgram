@@ -6,12 +6,17 @@ import javax.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
+@Table(name = "Product")
 public class Product {
+
+    @Column(name="price")
 	double price;
+
+	@Column(name="product_name")
 	String productName;
+
 	@GeneratedValue @Id Long productID;
 	static long productIdCounter = 0;
-	//PointStrategy pointStrat;
 	
 	
 	@Autowired
