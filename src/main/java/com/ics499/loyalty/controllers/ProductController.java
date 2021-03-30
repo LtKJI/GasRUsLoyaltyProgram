@@ -54,7 +54,7 @@ public class ProductController {
 	}
 	 
 	 @PostMapping("/add")
-		public String addProduct(@RequestBody String name, double price) {
+		public String addProduct(@RequestBody String name, @RequestBody double price) {
 	        products.put(name, new Product(price, name));
 	        productIncrement++;
 	        return "{\"message\": \"New product " + name + " added.\"}";
