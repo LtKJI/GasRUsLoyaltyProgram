@@ -2,6 +2,7 @@ package com.ics499.loyalty.controllers;
 
 // need to import LoyaltyAccount model to use the basic functions
 import com.ics499.loyalty.model.LoyaltyAccount;
+import com.ics499.loyalty.services.LoyaltyAccountService;
 
 // need to import all of these annotations to make routing easy
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ics499.loyalty.repositories.LoyaltyAccountRepo;
+// import com.ics499.loyalty.repositories.LoyaltyAccountRepo;
 import java.util.Optional;
 
 // only needed for basic backend testing
@@ -27,7 +28,7 @@ import java.util.HashMap;
 @RequestMapping("/loyalty_account") // all routes here will be /loyalty_account/<path var in mapping>
 public class LoyaltyAccountController {
     @Autowired
-    private LoyaltyAccountRepo loyaltyAccountRepo;
+    private LoyaltyAccountService loyaltyAccountService;
     /*
         for demo purposes only
             * creates a hashmap that maps email addresses to a LoyaltyAccount
@@ -55,8 +56,8 @@ public class LoyaltyAccountController {
         accounts.put("bob@gmail.com", new LoyaltyAccount(1, "bob@gmail.com", 100, 500, 600, "Gold"));
         accounts.put("jenny@gmail.com", new LoyaltyAccount(2, "jenny@gmail.com", 100, 300, 1000, "Platinum"));
         accountIncrement = 3;
-        loyaltyAccountRepo.save(new LoyaltyAccount(1, "bob@gmail.com", 100, 500, 600, "Gold"));
-        loyaltyAccountRepo.save(new LoyaltyAccount(2, "jenny@gmail.com", 100, 300, 1000, "Platinum"));
+        loyaltyAccountService.add(new LoyaltyAccount(1, "bob@gmail.com", 100, 500, 600, "Gold"));
+        loyaltyAccountService.add(new LoyaltyAccount(2, "jenny@gmail.com", 100, 300, 1000, "Platinum"));
         return "{\"message\": \"Bob and Jenny created.\"}";
     }
 
@@ -70,13 +71,13 @@ public class LoyaltyAccountController {
     */
     @GetMapping(path = "/display")
 	public @ResponseBody Iterable<LoyaltyAccount> displayAllMembers() {
-        String users = "{\"users\": [";
-        for(String i : accounts.keySet()) {
-            users = users + accounts.get(i).getJSON() + ",";
-        }
-        users = users + "]}";
+        // String users = "{\"users\": [";
+        // for(String i : accounts.keySet()) {
+        //     users = users + accounts.get(i).getJSON() + ",";
+        // }
+        // users = users + "]}";
         
-		return loyaltyAccountRepo.findAll();
+		return loyaltyAccountService.findAll();
     }
     
     /*
@@ -89,7 +90,7 @@ public class LoyaltyAccountController {
     */
     @GetMapping(path = "/find/{id}")
 	public @ResponseBody Optional<LoyaltyAccount> findMember(@PathVariable("id") Integer id) {
-		return loyaltyAccountRepo.findById(id);
+		return loyaltyAccountService.findById(id);
 	}
 
     /*
@@ -114,7 +115,7 @@ public class LoyaltyAccountController {
 	public String addMember(@RequestBody String email) {
         accounts.put(email, new LoyaltyAccount(accountIncrement, email, 0, 0, 0, "Silver"));
         accountIncrement++;
-        loyaltyAccountRepo.save(new LoyaltyAccount(accountIncrement, email, 0, 0, 0, "Silver"));
+        loyaltyAccountService.add(new LoyaltyAccount(accountIncrement, email, 0, 0, 0, "Silver"));
         return "{\"message\": \"New member " + email + " added.\"}";
 	}
 
@@ -137,7 +138,7 @@ public class LoyaltyAccountController {
         if(accounts.containsKey(la.getEmail())){
             accounts.remove(la.getEmail());
             accounts.put(la.getEmail(),la);
-            loyaltyAccountRepo.save(la);
+            loyaltyAccountService.add(la);
             return "{\"message\": \"Rewards redeemed\"}";
         }
         else {

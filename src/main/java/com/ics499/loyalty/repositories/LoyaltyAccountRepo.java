@@ -4,7 +4,8 @@ package com.ics499.loyalty.repositories;
 import org.springframework.data.repository.CrudRepository;
 
 import org.springframework.stereotype.Repository;
-import com.ics499.loyalty.model.*;
+import com.ics499.loyalty.model.LoyaltyAccount;
+
 
 @Repository
 public interface LoyaltyAccountRepo extends CrudRepository<LoyaltyAccount, Integer>{

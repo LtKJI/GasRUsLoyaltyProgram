@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;  
 import org.springframework.web.bind.annotation.ResponseBody;  
 
-import com.ics499.loyalty.repositories.RewardRepo;
+import com.ics499.loyalty.services.RewardService;
 import java.util.Optional;
 
 //only needed for basic backend testing
@@ -25,7 +25,7 @@ import java.util.HashMap;
 @RequestMapping("/reward") // all routes here will be /reward/<path var in mapping>
 public class RewardController {
     @Autowired
-    private RewardRepo rewardRepo;
+    private RewardService rewardService;
     // for demo purposes
     private HashMap<String, Reward> rewards = new HashMap<String, Reward>();
     
@@ -34,8 +34,8 @@ public class RewardController {
     public String createDemo(){
         rewards.put("car", new Reward(1, "car", 100, "A brand new car!!!!"));
         rewards.put("coal", new Reward(2, "coal", 5, "Piece of coal."));
-        rewardRepo.save(new Reward(1, "car", 100, "A brand new car!!!!"));
-        rewardRepo.save(new Reward(2, "coal", 5, "Piece of coal."));
+        rewardService.add(new Reward(1, "car", 100, "A brand new car!!!!"));
+        rewardService.add(new Reward(2, "coal", 5, "Piece of coal."));
         return "{\"message\": \"Demo rewards created created.\"}";
     }
 
@@ -46,19 +46,19 @@ public class RewardController {
             allRewards = allRewards + rewards.get(i).getJSON() + ",";
         }
         allRewards = allRewards + "]}";
-		return rewardRepo.findAll();
+		return rewardService.findAll();
 	}
     
 	@GetMapping("/find/{id}")    
 	public Optional<Reward> findRewards(@PathVariable("id") Integer id) {
-		return rewardRepo.findById(id);
+		return rewardService.findById(id);
     }
     
     //POST REQUESTS
     @PostMapping("/add")
     public String addRewards(@RequestBody Reward newReward) {
         rewards.put(newReward.getName(), newReward);
-        rewardRepo.save(newReward);
+        rewardService.add(newReward);
         return "{\"message\": \"New reward " + newReward.getName() + " added.\"}";
     }
 
@@ -68,7 +68,7 @@ public class RewardController {
         if(rewards.containsKey(updatedReward.getName())){
             rewards.remove(updatedReward.getName());
             rewards.put(updatedReward.getName(),updatedReward);
-            rewardRepo.save(updatedReward);
+            rewardService.add(updatedReward);
             return "{\"message\": \"Reward's point cost update\"}";
         }
         else {

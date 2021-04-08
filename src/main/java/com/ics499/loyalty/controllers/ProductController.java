@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ics499.loyalty.model.Product;
-import com.ics499.loyalty.repositories.ProductRepo;
+import com.ics499.loyalty.services.ProductService;
 import java.util.Optional;
 
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequestMapping("/product")
 public class ProductController {
 	@Autowired 
-	private ProductRepo productRepo;
+	private ProductService productService;
 	
 	private HashMap<String, Product> products = new HashMap<String, Product>();
 	
@@ -33,12 +33,12 @@ public class ProductController {
 			displayProducts.append("" + products.get(i).toString() + ", ");
 		}
 		
-		return productRepo.findAll();
+		return productService.findAll();
 	}
 	
 	 @GetMapping("/get/{id}")
 		public Optional<Product> getProduct(@PathVariable("id") Long id) {
-			return productRepo.findById(id);
+			return productService.findById(id);
 	}
 	 
 	//  @GetMapping("/get/{price}")
@@ -49,7 +49,7 @@ public class ProductController {
 	 @PostMapping("/add")
 		public String addProduct(@RequestBody String name, @RequestBody double price) {
 	        products.put(name, new Product(price, name));
-	        productRepo.save(new Product(price, name));
+	        productService.add(new Product(price, name));
 	        return "{\"message\": \"New product " + name + " added.\"}";
 		}	 
 	
