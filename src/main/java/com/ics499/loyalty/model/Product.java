@@ -3,7 +3,7 @@ package com.ics499.loyalty.model;
 
 import javax.persistence.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Table(name = "Product")
@@ -19,7 +19,7 @@ public class Product {
 	static long productIdCounter = 0;
 	
 	
-	@Autowired
+	// @Autowired
 	public Product(double p, String pN/*, PointStrategy pS*/) {
 		price = p;
 		productName = pN;

@@ -2,7 +2,7 @@ package com.ics499.loyalty.model;
 
 import javax.persistence.*;
 // import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Table(name = "LoyaltyAccount")
@@ -28,7 +28,7 @@ public class LoyaltyAccount {
 	@Column (name = "tier_strat")
 	String tierStrat;
 	
-	@Autowired
+	// @Autowired
 	public LoyaltyAccount(int aID, String e, int pB, int ytdP, int lP, String tS) {
 		accountID = aID;
 		email = e;
