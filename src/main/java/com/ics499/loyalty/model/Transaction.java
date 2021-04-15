@@ -1,33 +1,32 @@
 package com.ics499.loyalty.model;
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.*;
-import com.fasterxml.jackson.annotation.JsonFormat;
+// import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name = "Transaction")
+// @Table(name = "Transaction")
 public class Transaction {
-
 
 	@Id
 	@Column(name = "TransactionID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected int transactionID;
 	
-	@Column (name = "Date")
-	@Temporal (TemporalType.TIMESTAMP)
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	// @Column (name = "Date")
+	// @Temporal (TemporalType.TIMESTAMP)
+	// @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date date;
 	
-	@Column (name = "Subtotal")
+	// @Column (name = "Subtotal")
 	private float subtotal;
 	
-	@Column (name = "Discount")
+	// @Column (name = "Discount")
 	private float discounts;
 	
-	@Column (name = "Tax")
+	// @Column (name = "Tax")
 	private float tax;
 	
 	@ManyToOne
@@ -38,7 +37,7 @@ public class Transaction {
 					name = "Transaction_Product",
 					joinColumns = @ JoinColumn (name = "transactionID"),
 					inverseJoinColumns = @JoinColumn (name = "productID"))
-	private ArrayList <Product> products;
+	// private ArrayList <Product> products;
 
 	public int getTransactionID() {
 		return transactionID;
@@ -88,13 +87,13 @@ public class Transaction {
 		this.loyalty = loyalty;
 	}
 
-	public ArrayList<Product> getProducts() {
-		return products;
-	}
+	// public ArrayList<Product> getProducts() {
+	// 	return products;
+	// }
 
-	public void setProducts(ArrayList<Product> products) {
-		this.products = products;
-	}
+	// public void setProducts(ArrayList<Product> products) {
+	// 	this.products = products;
+	// }
 	
 	
 	

@@ -1,13 +1,27 @@
 package com.ics499.loyalty.model;
 
-public class LoyaltyAccount {
+import javax.persistence.*;
 
+@Entity
+public class LoyaltyAccount {
+	@Id
+  	@GeneratedValue(strategy=GenerationType.AUTO)
 	int accountID;
 	String email;
 	int pointsBalance;
 	int ytdPoints;
 	int lifetimePoints;
 	String tierStrat;
+
+	public LoyaltyAccount() {}
+
+	public LoyaltyAccount(String e, int pB, int ytdP, int lP, String tS) {
+		email = e;
+		pointsBalance = pB;
+		ytdPoints = ytdP;
+		lifetimePoints = lP;
+		tierStrat = tS;		
+	}
 	
 	public LoyaltyAccount(int aID, String e, int pB, int ytdP, int lP, String tS) {
 		accountID = aID;

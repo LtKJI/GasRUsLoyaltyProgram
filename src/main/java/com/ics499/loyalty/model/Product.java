@@ -1,9 +1,6 @@
 package com.ics499.loyalty.model;
 
-
 import javax.persistence.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 public class Product {
@@ -13,8 +10,6 @@ public class Product {
 	static long productIdCounter = 0;
 	//PointStrategy pointStrat;
 	
-	
-	@Autowired
 	public Product(double p, String pN/*, PointStrategy pS*/) {
 		price = p;
 		productName = pN;

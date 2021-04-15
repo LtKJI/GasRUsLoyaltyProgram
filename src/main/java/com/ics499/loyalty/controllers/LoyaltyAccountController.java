@@ -3,30 +3,26 @@ package com.ics499.loyalty.controllers;
 // need to import LoyaltyAccount model to use the basic functions
 import com.ics499.loyalty.model.LoyaltyAccount;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import java.util.Optional;
+
 // need to import all of these annotations to make routing easy
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;  
 import org.springframework.web.bind.annotation.GetMapping;  
 import org.springframework.web.bind.annotation.PathVariable;  
 import org.springframework.web.bind.annotation.PostMapping;  
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;  
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;  
 
-// only needed for basic backend testing
-import java.util.HashMap;
+import com.ics499.loyalty.repositories.LoyaltyAccountRepo;
 
-@RestController
+@Controller
 @RequestMapping("/loyalty_account") // all routes here will be /loyalty_account/<path var in mapping>
 public class LoyaltyAccountController {
-    /*
-        for demo purposes only
-            * creates a hashmap that maps email addresses to a LoyaltyAccount
-            * keeps track of number of accounts with the account increment var
-            * we won't need this once we get a database going
-    */
-    private HashMap<String, LoyaltyAccount> accounts = new HashMap<String, LoyaltyAccount>();
-    private int accountIncrement = 1;
+    @Autowired
+	private LoyaltyAccountRepo loyaltyAccountRepo;
 
     /*
         GET FUNCTIONS
@@ -42,10 +38,9 @@ public class LoyaltyAccountController {
         NOTE: This will be removed once we have the database working. This is for demos ONLY.
     */
     @GetMapping(path = "/create_demo")
-    public String createAccounts() {
-        accounts.put("bob@gmail.com", new LoyaltyAccount(1, "bob@gmail.com", 100, 500, 600, "Gold"));
-        accounts.put("jenny@gmail.com", new LoyaltyAccount(2, "jenny@gmail.com", 100, 300, 1000, "Platinum"));
-        accountIncrement = 3;
+    public @ResponseBody String createAccounts() {
+        loyaltyAccountRepo.save(new LoyaltyAccount(1, "bob@gmail.com", 100, 500, 600, "Gold"));
+        loyaltyAccountRepo.save(new LoyaltyAccount(2, "jenny@gmail.com", 100, 300, 1000, "Platinum"));
         return "{\"message\": \"Bob and Jenny created.\"}";
     }
 
@@ -58,13 +53,8 @@ public class LoyaltyAccountController {
 
     */
     @GetMapping(path = "/display")
-	public String displayAllMembers() {
-        String users = "{\"users\": [";
-        for(String i : accounts.keySet()) {
-            users = users + accounts.get(i).getJSON() + ",";
-        }
-        users = users + "]}";
-		return users;
+	public @ResponseBody Iterable<LoyaltyAccount> displayAllMembers() {
+		return loyaltyAccountRepo.findAll();
     }
     
     /*
@@ -75,9 +65,9 @@ public class LoyaltyAccountController {
         Same as /display, this will stay about the same but will change a tiny bit
         with the addition of the database.
     */
-    @GetMapping(path = "/find/{email}")
-	public String findMember(@PathVariable("email") String email) {
-		return accounts.get(email).getJSON();
+    @GetMapping(path = "/find/{id}")
+	public @ResponseBody Optional<LoyaltyAccount> findMember(@PathVariable("id") int id) {
+		return loyaltyAccountRepo.findById(id);
 	}
 
     /*
@@ -99,10 +89,8 @@ public class LoyaltyAccountController {
         NOTE: you will need curl or postman to do this request
     */
     @PostMapping(path = "/add")
-	public String addMember(@RequestBody String email) {
-        accounts.put(email, new LoyaltyAccount(accountIncrement, email, 0, 0, 0, "Silver"));
-        accountIncrement++;
-        return "{\"message\": \"New member " + email + " added.\"}";
+	public @ResponseBody LoyaltyAccount addMember(@RequestBody String email) {
+        return loyaltyAccountRepo.save(new LoyaltyAccount(email, 0, 0, 0, "Silver"));
 	}
 
     /*
@@ -119,10 +107,9 @@ public class LoyaltyAccountController {
             * assumes frontend will do the quick math for us - if not, this will have to change
     */
     @PutMapping(path = "/redeem")
-	public String RedeemRewards(@RequestBody LoyaltyAccount la) {
-        if(accounts.containsKey(la.getEmail())){
-            accounts.remove(la.getEmail());
-            accounts.put(la.getEmail(),la);
+	public @ResponseBody String RedeemRewards(@RequestBody LoyaltyAccount la) {
+        if(loyaltyAccountRepo.existsById(la.getAccountID())){
+            loyaltyAccountRepo.save(la);
             return "{\"message\": \"Rewards redeemed\"}";
         }
         else {
