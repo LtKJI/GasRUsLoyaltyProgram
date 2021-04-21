@@ -1,0 +1,14 @@
+<h2>Welcome {{user.email | uppercase}}!</h2>
+<h3>Here is the breakdown for your account #{{user.accountID}}</h3>
+<div>
+  <b>Points Balance:</b> {{user.pointsBalance}}<br>
+  <b>YTD Points:</b> {{user.ytdPoints}}<br>
+  <b>Lifetime Points:</b> {{user.lifetimePoints}}<br>
+  <b>Current Tier:</b> {{user.tierStrat}}<br>
+</div>
+<hr>
+<div>
+  <button>Home</button>
+  <button>Buy Products</button>
+  <button>Redeem Points</button>
+</div>
