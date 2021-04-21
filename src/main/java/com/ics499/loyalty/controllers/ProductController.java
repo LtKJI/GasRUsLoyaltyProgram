@@ -1,64 +1,38 @@
 package com.ics499.loyalty.controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import java.util.Optional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.ics499.loyalty.model.Product;
 import com.ics499.loyalty.repositories.ProductRepo;
 
-@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
-@RestController
+@Controller
 @RequestMapping("/product")
 public class ProductController {
-	
-	
+	@Autowired
 	private ProductRepo productRepo;
 	
-	private HashMap<String, Product> products = new HashMap<String, Product>();
-	static private int productIncrement = 0;
-	
-	@Autowired
-	public ProductController() {
-		
-	}
-	
 	@GetMapping("/all")
-	public String all() {
-		StringBuilder displayProducts = new StringBuilder();
-		for (String i: products.keySet()) {
-			displayProducts.append("" + products.get(i).toString() + ", ");
-		}
-		
-		return displayProducts.toString();
+	public @ResponseBody Iterable<Product> all() {
+		return productRepo.findAll();
 	}
 	
-	 @GetMapping("/get/{product}")
-		public String getProduct(@PathVariable("product") Product product) {
-			return products.get(product).toString();
+	@GetMapping("/get/{id}")
+	public @ResponseBody Optional<Product> getProduct(@PathVariable("id") Long id) {
+		return productRepo.findById(id);
 	}
 	 
-	 @GetMapping("/get/{price}")
-		public double getPrice(@PathVariable("price") Product product) {
-			return products.get(product).getPrice();
-	}
-	 
-	 @PostMapping("/add")
-		public String addProduct(@RequestBody String name, double price) {
-	        products.put(name, new Product(price, name));
-	        productIncrement++;
-	        return "{\"message\": \"New product " + name + " added.\"}";
-		}	 
+	@PostMapping("/add")
+	public @ResponseBody Product addProduct(@RequestBody String name, double price) {
+	       return productRepo.save(new Product(price, name));
+	}	 
 	
 
 /**
@@ -97,7 +71,7 @@ public class ProductController {
 //		productRepo.delete(product);
 //	}
 	
-	public String demo() {
-		return "demo successful";
-	}
+	// public String demo() {
+	// 	return "demo successful";
+	// }
 }
