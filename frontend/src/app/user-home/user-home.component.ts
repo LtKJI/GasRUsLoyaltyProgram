@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../user';
+import { UserHomeService } from '../user-home.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-home',
@@ -8,17 +10,19 @@ import { User } from '../user';
 })
 export class UserHomeComponent implements OnInit {
   user: User = {
-    accountID: 3452,
-    email: 'alayna@gmail.com',
-    pointsBalance: 100,
-    ytdPoints: 1000,
-    lifetimePoints: 10000000,
-    tierStrat: "Gold"
+    accountID: 0,
+    email: '',
+    pointsBalance: 0,
+    ytdPoints: 0,
+    lifetimePoints: 0,
+    tierStrat: ""
   };
 
-  constructor() { }
+  constructor(private UserHomeService: UserHomeService) { }
 
   ngOnInit(): void {
+    this.UserHomeService.getSpecificLoyaltyAccount("1")
+    .subscribe(user => this.user = user);
   }
 
 }

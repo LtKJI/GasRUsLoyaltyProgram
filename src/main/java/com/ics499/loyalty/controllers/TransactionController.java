@@ -25,7 +25,7 @@ public class TransactionController {
 		return transactionRepo.findAll();
 	}
 	
-	@GetMapping ("/id")
+	@GetMapping ("/id/{id}")
 	public Optional<Transaction> getByID (@PathVariable int id) {
 		return transactionRepo.findById(id);
 	}
