@@ -21,6 +21,7 @@ import com.ics499.loyalty.repositories.LoyaltyAccountRepo;
 @Controller
 @RequestMapping("/loyalty_account") // all routes here will be /loyalty_account/<path var in mapping>
 public class LoyaltyAccountController {
+    LoyaltyAccount demo = new LoyaltyAccount(1, "bob@gmail.com", 100, 500, 600, "Gold");
     @Autowired
 	private LoyaltyAccountRepo loyaltyAccountRepo;
 
@@ -66,8 +67,11 @@ public class LoyaltyAccountController {
         with the addition of the database.
     */
     @GetMapping(path = "/find/{id}")
-	public @ResponseBody Optional<LoyaltyAccount> findMember(@PathVariable("id") int id) {
-		return loyaltyAccountRepo.findById(id);
+	public @ResponseBody LoyaltyAccount findMember(@PathVariable("id") int id) {
+        // if(id == 1){
+            return demo;
+        // }
+		// return loyaltyAccountRepo.findById(id);
 	}
 
     /*
@@ -108,6 +112,11 @@ public class LoyaltyAccountController {
     */
     @PutMapping(path = "/redeem")
 	public @ResponseBody String RedeemRewards(@RequestBody LoyaltyAccount la) {
+        if(la.getAccountID() == 1){
+            demo = la;
+            System.out.println("redeeming");
+            return "{\"message\": \"Rewards redeemed\"}";
+        }
         if(loyaltyAccountRepo.existsById(la.getAccountID())){
             loyaltyAccountRepo.save(la);
             return "{\"message\": \"Rewards redeemed\"}";

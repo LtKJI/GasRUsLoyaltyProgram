@@ -1,20 +1,13 @@
-<p>{{cartCount}}</p>
-<p>{{totalCost}}</p>
-<p>{{totalPoints}}</p>
+<p><b>Number of Items in Cart:</b> {{cartCount}}</p>
+<p><b>Total Cost:</b> ${{totalCost}}</p>
+<p><b>Total Points Earned:</b> {{totalPoints}}</p>
+<p><button (click)="checkoutButtonOnClick(cartCount, totalCost, totalPoints)">Checkout</button></p>
 <div class='productList'>
 <ul *ngFor="let product of products">
   <button (click)="productButtonOnClick(product)">
 <p>{{product.name}}</p>
 <p>${{product.price}}</p>
-<p>{{product.pointValue}} points</p>
-
+<p>{{product.pointValue}} point(s)</p>
 </button>
-
-
-
-
 </ul>
-
-
-
 </div>

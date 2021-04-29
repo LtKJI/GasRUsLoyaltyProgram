@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductComponent } from './product/product.component';
+import { RedeemComponent } from './redeem/redeem.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserHomeComponent,
-    ProductComponent
+    ProductComponent,
+    RedeemComponent
   ],
   imports: [
     HttpClientModule,
