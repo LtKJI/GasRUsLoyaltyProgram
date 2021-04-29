@@ -21,8 +21,9 @@ export class UserHomeComponent implements OnInit {
   constructor(private UserHomeService: UserHomeService) { }
 
   ngOnInit(): void {
-    this.UserHomeService.getSpecificLoyaltyAccount("1")
-    .subscribe(user => this.user = user);
+    this.user = this.UserHomeService.get();
+    // this.UserHomeService.getSpecificLoyaltyAccount("1")
+    // .subscribe(user => this.user = user);
   }
 
 }

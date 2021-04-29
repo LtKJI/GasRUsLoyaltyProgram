@@ -22,6 +22,15 @@ export class UserHomeService {
 
   constructor(private _http: HttpClient) { }
 
+  user: User = {
+    accountID: 1,
+    email: 'bob@gmail.com',
+    pointsBalance: 100,
+    ytdPoints: 10000,
+    lifetimePoints: 10000000,
+    tierStrat: "Platinum"
+  };
+
   getAllLoyaltyAccounts(): Observable<User[]> {
     return this._http.get<User[]>(`${this._loyaltyAccountUrl}/display`)
         .pipe(catchError(this.handleError));
@@ -38,6 +47,7 @@ export class UserHomeService {
   }
 
   redeemRewards(user: User): Observable<any> {
+    console.log("redeeming rewards");
     return this._http.put<User>(`${this._loyaltyAccountUrl}/redeem`, user, this.httpOptionsJson)
     .pipe(catchError(this.handleError));
   }
@@ -49,5 +59,13 @@ export class UserHomeService {
     console.error(errMsg); 
 
     return observableThrowError(errMsg); 
+  }
+
+  get(): User {
+    return this.user;
+  }
+
+  update(user: User): void {
+    this.user = user;
   }
 }

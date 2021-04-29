@@ -1,0 +1,12 @@
+<p><b>Number of Items in Cart:</b> {{cartCount}}</p>
+<p><b>Total Points Cost:</b> {{totalCost}}</p>
+<p><button (click)="checkoutButtonOnClick(cartCount, totalCost)">Checkout</button></p>
+<div class='productList'>
+<ul *ngFor="let reward of rewards">
+  <button (click)="productButtonOnClick(reward)">
+<p><b>Name:</b> {{reward.name}}</p>
+<p><b>Cost:</b> {{reward.pointsCost}} points</p>
+<p><b>Description: </b> {{reward.description}}</p>
+</button>
+</ul>
+</div>

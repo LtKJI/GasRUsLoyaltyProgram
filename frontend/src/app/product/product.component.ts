@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { UserHomeService } from '../user-home.service';
+import { User } from '../user';
+
+
 
 @Component({
   selector: 'app-product',
@@ -7,9 +11,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductComponent implements OnInit {
 
-  constructor() { }
+  user: User = {
+    accountID: 0,
+    email: '',
+    pointsBalance: 0,
+    ytdPoints: 0,
+    lifetimePoints: 0,
+    tierStrat: ""
+  };
+
+  constructor(private UserHomeService: UserHomeService) { }
 
   ngOnInit(): void {
+    this.user = this.UserHomeService.get();
   }
 
   cart: Products = [];
@@ -21,13 +35,13 @@ export class ProductComponent implements OnInit {
 
   products: Products = [
     {
-      name: 'Item 1', price: 20.00, pointValue: 15
+      name: '10 Gallons of Gas', price: 20.00, pointValue: 20
     },
         {
-      name: 'Item 2', price: 5.00, pointValue: 3
+      name: 'Chips', price: 2.00, pointValue: 2
     },
         {
-      name: 'Item 3', price: 7.50, pointValue: 5
+      name: 'Drink', price: 1.00, pointValue: 1
     }
   ];
 
@@ -38,7 +52,20 @@ export class ProductComponent implements OnInit {
     this.totalPoints = this.totalPoints + product.pointValue;
     console.log(this.cartCount);
   }
+
+  checkoutButtonOnClick(cartCount: number, totalCost: number, totalPoints: number) {
+    this.cartCount = 0;
+    this.totalCost = 0;
+    this.user.pointsBalance += this.totalPoints;
+    this.user.ytdPoints += this.totalPoints;
+    this.user.lifetimePoints += this.totalPoints;
+    console.log(this.user);
+    this.UserHomeService.update(this.user);
+    this.totalPoints = 0;
+  }
 }
+
+
 
 
 type Product = {
